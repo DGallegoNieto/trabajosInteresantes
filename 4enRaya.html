@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+	<title>4 en raya</title>
+	<meta charset="UTF-8">
+
+	<style>
+		td{
+			width:70px; 
+			height:70px
+		}
+	</style>
+
+	<script> 
+		
+		var mapa = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+		var contadorTurno = 0;
+
+	</script>
+</head>
+
+<body>
+	<h1>4 en raya</h1>
+
+	<p id="jugador">Turno del jugador 1</p> <!-- Cambia el nombre del jugador en funcion del turno que sea -->
+
+	<table border="1">
+		<tr>
+			<td id="1" onclick="juego(1)"></td>
+			<td id="2" onclick="juego(2)"></td>
+			<td id="3" onclick="juego(3)"></td>
+            <td id="4" onclick="juego(4)"></td>
+		</tr>
+		<tr>
+			<td id="5" onclick="juego(5)"></td>
+			<td id="6" onclick="juego(6)"></td>
+            <td id="7" onclick="juego(7)"></td>
+            <td id="8" onclick="juego(8)"></td>
+		</tr>
+		<tr>
+			<td id="9" onclick="juego(9)"></td>
+            <td id="10" onclick="juego(10)"></td>
+			<td id="11" onclick="juego(11)"></td>
+            <td id="12" onclick="juego(12)"></td>
+		</tr>
+        <tr>
+			<td id="13" onclick="juego(13)"></td>
+            <td id="14" onclick="juego(14)"></td>
+			<td id="15" onclick="juego(15)"></td>
+            <td id="16" onclick="juego(16)"></td>
+		</tr>
+
+
+	</table>
+
+	<p id="texto"></p>
+
+
+	<script type="text/javascript">
+
+		//FUNCIONES
+		function juego(posicion){
+
+			if(mapa[posicion-1] == 0){
+
+					contadorTurno++;
+
+					if(contadorTurno%2 != 0){ //Jugador 1 - ContadorTurno impar
+						mapa[posicion-1] = 1; //Cambia la casilla en el mapa a 1 o 2 según el jugador
+						pintar(posicion, 1);
+						ganador(1);
+                        
+					} else { //Jugador 2 - ContadorTurno par
+						mapa[posicion-1] = 2;
+						pintar(posicion, 2);
+						ganador(2);
+					}
+			} else{
+				alert("Elige otra casilla."); //Alerta que aparece si se selecciona una casilla ya pintada
+			}			
+		}
+
+		function pintar(posicion, jugador){ //Cambia el color de las casillas en función de a qué jugador le toque
+			if(jugador == 1){
+				document.getElementById(posicion).style.backgroundColor = "blue";
+				document.getElementById("jugador").innerHTML = "Turno del jugador 2"
+			}else{
+				document.getElementById(posicion).style.backgroundColor = "red";
+				document.getElementById("jugador").innerHTML = "Turno del jugador 1"
+			}
+		}
+
+		function ganador(jugador){ //Trata si alguien ha ganado
+
+			//Filas
+			for(var i = 0; i < 15; i += 4){
+                 if (mapa[i] == mapa[i+1] && mapa[i+1] == mapa[i+2] && mapa[i+2] == mapa[i+3] && mapa[i] != 0 && mapa[i+1] != 0 && mapa[i+2] != 0 && mapa[i+3] != 0) {
+	                acabarJuego(jugador);
+                }
+            }
+
+            //Columnas
+            for(var i = 0; i < 4; i++){
+                if(mapa[i] == mapa[i+4] && mapa[i+4] == mapa[i+8] && mapa[i+8] == mapa[i+12] && mapa[i] != 0 && mapa[i+4] != 0 && mapa[i+8] != 0 && mapa[i+12] != 0) {
+	                acabarJuego(jugador);
+                }
+            }
+
+            //Diagonal izq-dcha
+            if(mapa[0] == mapa[5] && mapa[5] == mapa[10] && mapa[10] == mapa[15] && mapa[0] != 0 && mapa[5] != 0 && mapa[10] != 0 && mapa[15] != 0){
+             	acabarJuego(jugador);
+            }
+
+            //Diagonal dcha-izq
+            if(mapa[3] == mapa[6] && mapa[6] == mapa[9] && mapa[9] == mapa[12] && mapa[3] != 0 && mapa[6] != 0 && mapa[9] != 0 && mapa[12] != 0){
+             	acabarJuego(jugador);
+            }
+
+            //Empate
+            if(mapa[0] != 0 && mapa[1] != 0 && mapa[2] != 0 && mapa[3] != 0 && mapa[4] != 0 && mapa[5] != 0 && mapa[6] != 0 && mapa[7] != 0 && mapa[8] != 0 && mapa[9] != 0 && mapa[10] != 0 && mapa[11] != 0 && mapa[12] != 0 && mapa[13] != 0 && mapa[14] != 0 && mapa[15] != 0){
+            	alert("Ha habido un empate.");
+				document.getElementById("texto").innerHTML = "<button onclick='location.reload()'>Volver a empezar</button>";
+            }
+        }
+			
+
+		function acabarJuego(jugador) { //Acaba el juego, desactiva el tablero y muestra el boton de "volver a empezar"
+			alert("¡Ha ganado el jugador " + jugador + "!");
+			document.getElementById("texto").innerHTML = "<button onclick='location.reload()'>Volver a empezar</button>";
+
+			for (var i = 1; i <= mapa.length; i++) { //Desactiva tablero
+				document.getElementById(i).onclick = " ";
+			}
+  
+		}
+        
+        
+	</script>
+</body>
+</html>
